@@ -39,12 +39,12 @@
 	float topOffset = rect.origin.y;
 	
 	if(scalesImageToFit){
-		float size = fmax(rect.size.width, rect.size.height);
+		float size = fmaxf(rect.size.width, rect.size.height);
 		
 		float widthScale = imageSize.width / size;
 		float heightScale = imageSize.height / size;
 		
-		float scale = fmin(widthScale, heightScale);
+		float scale = fminf(widthScale, heightScale);
 		
 		newWidth = imageSize.width / scale;
 		newHeight = imageSize.height / scale;
@@ -53,8 +53,8 @@
 		newHeight = imageSize.height;
 	}
 	
-	if(rect.size.height < newHeight) topOffset += ceil((rect.size.height - newHeight) / 2);
-	if(rect.size.width < newWidth) leftOffset += ceil((rect.size.width - newWidth) / 2);
+	if(rect.size.height < newHeight) topOffset += ceilf((rect.size.height - newHeight) / 2);
+	if(rect.size.width < newWidth) leftOffset += ceilf((rect.size.width - newWidth) / 2);
 	
 	CGRect imageRect = CGRectMake(leftOffset, topOffset, newWidth, newHeight);
 	

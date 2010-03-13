@@ -236,7 +236,7 @@
 	if([layout contentHeight] > b.size.height)
 		[self setContentSize:CGSizeMake(b.size.width, [layout contentHeight])];
 	else
-		[self setContentSize:CGSizeMake(b.size.width, b.size.height + 1.0)];
+		[self setContentSize:CGSizeMake(b.size.width, b.size.height + 1.0f)];
 }
 
 - (CHTileView *)dequeueReusableTileWithIdentifier:(NSString *)identifier{

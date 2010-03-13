@@ -16,7 +16,7 @@
 - (id)initWithSection:(int)s{
 	if(self = [super init]){
 		section = s;
-		yCoordinate = 0.0;
+		yCoordinate = 0.0f;
 	}
 	return self;
 }

@@ -63,7 +63,7 @@
 	
 	CGRect b = self.bounds;
 	float padding = 10.0f;
-	float fontHeight = floor(b.size.height * 0.60f);
+	float fontHeight = floorf(b.size.height * 0.60f);
 	if(fontHeight > 20.0f) fontHeight = 20.0f;
 	
 	//graw gradient
@@ -74,7 +74,7 @@
 	
 	float gradientOpacity = 0.85f;
 	
-	CGFloat locations[2] = { 0.0, 1.0 };
+	CGFloat locations[2] = { 0.0f, 1.0f };
 	
 																			// RGBA values for start and end colors
 	CGFloat components[8] = {	0.572f, 0.627f, 0.670f, gradientOpacity,		// Start color
@@ -108,7 +108,7 @@
 	CGContextSetShadow(c, CGSizeMake(0, -1.0f), 1.0f);
 	
 	CGSize fontSize = [title sizeWithFont:f forWidth:textWidth lineBreakMode:UILineBreakModeTailTruncation];
-	[title drawInRect:CGRectMake(padding, ceil((b.size.height - fontSize.height) / 2), textWidth, fontSize.height) withFont:f lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
+	[title drawInRect:CGRectMake(padding, ceilf((b.size.height - fontSize.height) / 2), textWidth, fontSize.height) withFont:f lineBreakMode:UILineBreakModeTailTruncation alignment:UITextAlignmentLeft];
 }
 
 - (NSString *)description{

@@ -122,7 +122,7 @@
 		NSMutableArray *tilesForSection = [index objectAtIndex:i];
 		
 		if(sections > 1){
-			float previousY = 0.0;
+			float previousY = 0.0f;
 			if(previousSection != nil) previousY = previousSection.yCoordinate;
 			int numberOfTilesInPreviousSection = 0;
 			if(i > 0) numberOfTilesInPreviousSection = [[index objectAtIndex:(i - 1)] count];
@@ -135,7 +135,7 @@
 		}
 		
 		for(CHGridLayoutTile *tile in tilesForSection){
-			float y = 0.0;
+			float y = 0.0f;
 			if(section != nil) y = section.yCoordinate + sectionTitleHeight;
 			
 			float rowXPadding = (padding.width * perLineFloat) + padding.width;
