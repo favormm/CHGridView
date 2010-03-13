@@ -14,7 +14,7 @@
 @synthesize section, yCoordinate;
 
 - (id)initWithSection:(int)s{
-	if(self = [super init]){
+	if((self = [super init])){
 		section = s;
 		yCoordinate = 0.0f;
 	}

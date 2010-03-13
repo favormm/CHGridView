@@ -14,7 +14,7 @@
 @synthesize indexPath, selected, highlighted, contentBackgroundColor, reuseIdentifier, shadowOffset, shadowColor, shadowBlur;
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseId{
-	if(self = [super initWithFrame:frame]){
+	if((self = [super initWithFrame:frame])){
 		indexPath = CHGridIndexPathMake(0, 0);
 		selected = NO;
 		reuseIdentifier = [reuseId copy];

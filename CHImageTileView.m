@@ -15,7 +15,7 @@
 @synthesize image, scalesImageToFit;
 
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseId{
-	if(self = [super initWithFrame:frame reuseIdentifier:reuseId]){
+	if((self = [super initWithFrame:frame reuseIdentifier:reuseId])){
 		if(image == nil)
 			image = [[UIImage alloc] init];
 		

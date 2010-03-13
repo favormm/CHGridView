@@ -14,7 +14,7 @@
 @synthesize indexPath, rect;
 
 - (id)initWithIndexPath:(CHGridIndexPath)anIndexPath{
-	if(self = [super init]){
+	if((self = [super init])){
 		indexPath = anIndexPath;
 		
 		rect = CGRectZero;

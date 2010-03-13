@@ -31,7 +31,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame{
-	if(self = [super initWithFrame:frame]){
+	if((self = [super initWithFrame:frame])){
 		if(visibleTiles == nil)
 			visibleTiles = [[NSMutableArray alloc] init];
 		

@@ -20,7 +20,7 @@
 @synthesize index, justTiles, gridWidth, contentHeight, padding, perLine, preLoadMultiplier, rowHeight, sectionTitleHeight;
 
 - (id)init{
-	if(self = [super init]){
+	if((self = [super init])){
 		if(index == nil)
 			index = [[NSMutableArray alloc] init];
 		
