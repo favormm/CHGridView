@@ -17,7 +17,7 @@ struct CHGridIndexPath {
 typedef struct CHGridIndexPath CHGridIndexPath;
 
 static CHGridIndexPath CHGridIndexPathMake(int section, int tileIndex){
-	CHGridIndexPath index; index.section = section; index.tileIndex = tileIndex; return index;
+	CHGridIndexPath indexPath; indexPath.section = section; indexPath.tileIndex = tileIndex; return indexPath;
 }
 
 @interface CHTileView : UIView {

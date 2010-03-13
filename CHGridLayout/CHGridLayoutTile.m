@@ -13,9 +13,9 @@
 @implementation CHGridLayoutTile
 @synthesize indexPath, rect;
 
-- (id)initWithIndexPath:(CHGridIndexPath)index{
+- (id)initWithIndexPath:(CHGridIndexPath)anIndexPath{
 	if(self = [super init]){
-		indexPath = index;
+		indexPath = anIndexPath;
 		
 		rect = CGRectZero;
 	}

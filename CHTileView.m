@@ -47,8 +47,8 @@
 	[self setSelected:NO];
 }
 
-- (void)setIndexPath:(CHGridIndexPath)index{
-	indexPath = index;
+- (void)setIndexPath:(CHGridIndexPath)anIndexPath{
+	indexPath = anIndexPath;
 }
 
 - (void)drawRect:(CGRect)rect{
