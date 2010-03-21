@@ -23,7 +23,7 @@ struct CHSectionRange {
 };
 typedef struct CHSectionRange CHSectionRange;
 
-static CHSectionRange CHSectionRangeMake(int start, int end){
+static inline CHSectionRange CHSectionRangeMake(int start, int end){
 	CHSectionRange range; range.start = start; range.end = end; return range;
 }
 

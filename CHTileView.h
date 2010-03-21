@@ -16,7 +16,7 @@ struct CHGridIndexPath {
 };
 typedef struct CHGridIndexPath CHGridIndexPath;
 
-static CHGridIndexPath CHGridIndexPathMake(int section, int tileIndex){
+static inline CHGridIndexPath CHGridIndexPathMake(int section, int tileIndex){
 	CHGridIndexPath indexPath; indexPath.section = section; indexPath.tileIndex = tileIndex; return indexPath;
 }
 
