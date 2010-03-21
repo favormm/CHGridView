@@ -437,7 +437,7 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
 	[super touchesMoved:touches withEvent:event];
 
-	if(self.dragging || self.tracking || self.decelerating && allowsSelection){
+	if(self.dragging || self.tracking || (self.decelerating && allowsSelection)){
 		if(selectedTile != nil){
 			[selectedTile setSelected:NO];
 			selectedTile = nil;
