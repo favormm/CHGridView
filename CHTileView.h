@@ -36,7 +36,7 @@ static CHGridIndexPath CHGridIndexPathMake(int section, int tileIndex){
 }
 
 @property (nonatomic) CHGridIndexPath				indexPath;
-@property (nonatomic, readonly, copy) NSString		*reuseIdentifier;
+@property (nonatomic, copy) NSString                *reuseIdentifier;
 
 @property (nonatomic) BOOL							selected;
 @property (nonatomic) BOOL							highlighted;

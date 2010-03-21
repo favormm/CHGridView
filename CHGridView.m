@@ -26,43 +26,57 @@
 @implementation CHGridView
 @synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight;
 
+- (void)commonSetup{
+    if(visibleTiles == nil)
+        visibleTiles = [[NSMutableArray alloc] init];
+
+    if(visibleSectionHeaders == nil)
+        visibleSectionHeaders = [[NSMutableArray alloc] init];
+
+    if(reusableTiles == nil)
+        reusableTiles = [[NSMutableArray alloc] init];
+
+    if(layout == nil)
+        layout = [[CHGridLayout alloc] init];
+
+    if(sectionCounts == nil)
+        sectionCounts = [[NSMutableArray alloc] init];
+
+    sections = 1;
+
+    allowsSelection = YES;
+    centerTilesInGrid = NO;
+    padding = CGSizeMake(10.0f, 10.0f);
+    rowHeight = 100.0f;
+    perLine = 5;
+    sectionTitleHeight = 25.0f;
+
+    preLoadMultiplier = 6.0f;
+
+    [self setBackgroundColor:[UIColor whiteColor]];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reuseHiddenTiles) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
+
 - (id)init{
-	return [self initWithFrame:CGRectZero];
+    if ((self = [super init])){
+        [self commonSetup];
+    }
+    return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder{
+    if ((self = [super initWithCoder:aDecoder])){
+        [self commonSetup];
+    }
+    return self;
 }
 
 - (id)initWithFrame:(CGRect)frame{
-	if((self = [super initWithFrame:frame])){
-		if(visibleTiles == nil)
-			visibleTiles = [[NSMutableArray alloc] init];
-		
-		if(visibleSectionHeaders == nil)
-			visibleSectionHeaders = [[NSMutableArray alloc] init];
-			
-		if(reusableTiles == nil)
-			reusableTiles = [[NSMutableArray alloc] init];
-		
-		if(layout == nil)
-			layout = [[CHGridLayout alloc] init];
-		
-		if(sectionCounts == nil)
-			sectionCounts = [[NSMutableArray alloc] init];
-		
-		sections = 1;
-		
-		allowsSelection = YES;
-		centerTilesInGrid = NO;
-		padding = CGSizeMake(10.0f, 10.0f);
-		rowHeight = 100.0f;
-		perLine = 5;
-		sectionTitleHeight = 25.0f;
-		
-		preLoadMultiplier = 6.0f;
-		
-		[self setBackgroundColor:[UIColor whiteColor]];
-		
-		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reuseHiddenTiles) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-	}
-	return self;
+    if ((self = [super initWithFrame:frame])){
+        [self commonSetup];
+    }
+    return self;
 }
 
 - (void)dealloc {

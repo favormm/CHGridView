@@ -13,23 +13,35 @@
 @implementation CHTileView
 @synthesize indexPath, selected, highlighted, contentBackgroundColor, reuseIdentifier, shadowOffset, shadowColor, shadowBlur;
 
+- (void)commonSetup{
+    indexPath = CHGridIndexPathMake(0, 0);
+    selected = NO;
+
+    if(contentBackgroundColor == nil)
+        contentBackgroundColor = [[UIColor whiteColor] retain];
+
+    shadowOffset = CGSizeMake(0.0f, 0.0f);
+    shadowColor = [[UIColor colorWithWhite:0.0f alpha:0.5f] retain];
+    shadowBlur = 0.0f;
+
+    [self setOpaque:YES];
+    [self setContentMode:UIViewContentModeRedraw];    
+}
+
 - (id)initWithFrame:(CGRect)frame reuseIdentifier:(NSString *)reuseId{
 	if((self = [super initWithFrame:frame])){
-		indexPath = CHGridIndexPathMake(0, 0);
-		selected = NO;
 		reuseIdentifier = [reuseId copy];
-		
-		if(contentBackgroundColor == nil)
-			contentBackgroundColor = [[UIColor whiteColor] retain];
-		
-		shadowOffset = CGSizeMake(0.0f, 0.0f);
-		shadowColor = [[UIColor colorWithWhite:0.0f alpha:0.5f] retain];
-		shadowBlur = 0.0f;
-		
-		[self setOpaque:YES];
-		[self setContentMode:UIViewContentModeRedraw];
+        [self commonSetup];
 	}
 	return self;
+}
+
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    if((self = [super initWithCoder:aDecoder])){
+        [self commonSetup];
+    }
+    return self;
 }
 
 - (void)dealloc {
