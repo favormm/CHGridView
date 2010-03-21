@@ -180,7 +180,7 @@
 		CGRect r = tile.frame;
 		if(r.origin.y > firstY || r.origin.y + r.size.height < secondY){
 			[toReuse addObject:tile];
-			if(reusableTiles.count < maxReusable) [reusableTiles addObject:tile];
+			if(reusableTiles.count < (uint)maxReusable) [reusableTiles addObject:tile];
 		}
 	}
 	

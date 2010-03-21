@@ -81,7 +81,7 @@
 }
 
 - (void)setNumberOfTiles:(int)tiles ForSectionIndex:(int)section{
-	if(section < 0 || section >= index.count) return;
+	if(section < 0 || (uint)section >= index.count) return;
 	
 	int i;
 	for(i = 0; i < tiles; i++){
@@ -114,7 +114,7 @@
 	if(sections > 1) contentHeight += (sectionTitleHeight * sections) + ((sections - 1) * padding.height);
 	contentHeight += padding.height;
 	
-	int i;
+	uint i;
 	for(i = 0; i < index.count; i++){
 		CHGridLayoutSection *section = [sectionTitles objectAtIndex:i];
 		CHGridLayoutSection *previousSection = nil;
