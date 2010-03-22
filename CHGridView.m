@@ -12,6 +12,7 @@
 #import "CHGridLayoutTile.h"
 
 @interface CHGridView()
+@property (nonatomic, retain) CHTileView *selectedTile;
 - (void)loadVisibleSectionTitlesForSectionRange:(CHSectionRange)range;
 - (void)loadVisibleTileForIndexPath:(CHGridIndexPath)indexPath withRect:(CGRect)r;
 - (void)reuseHiddenTiles;
@@ -24,7 +25,7 @@
 @end
 
 @implementation CHGridView
-@synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight;
+@synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight, selectedTile;
 @dynamic gridHeaderView, gridFooterView;
 
 - (void)commonSetup{
@@ -94,6 +95,7 @@
 	[visibleTiles release];
     [gridHeaderView release];
     [gridFooterView release];
+    [selectedTile release];
     [super dealloc];
 }
 
@@ -396,7 +398,7 @@
 	for(CHTileView *tile in visibleTiles){
 		if(tile.indexPath.section == indexPath.section && tile.indexPath.tileIndex == indexPath.tileIndex){
 			[tile setSelected:NO];
-			selectedTile = nil;
+			self.selectedTile = nil;
 		}
 	}
 }
@@ -404,7 +406,7 @@
 - (void)deselectSelectedTile{
 	if(selectedTile){
 		[self deselectTileAtIndexPath:selectedTile.indexPath];
-		selectedTile = nil;
+		self.selectedTile = nil;
 	}
 }
 
@@ -466,7 +468,7 @@
 		if(selectedTile)
 			[self deselectTileAtIndexPath:selectedTile.indexPath];
 		
-		selectedTile = (CHTileView *)view;
+		self.selectedTile = (CHTileView *)view;
 		[selectedTile setSelected:YES];
 	}
 }
@@ -477,7 +479,7 @@
 	if(self.dragging || self.tracking || (self.decelerating && allowsSelection)){
 		if(selectedTile != nil){
 			[selectedTile setSelected:NO];
-			selectedTile = nil;
+			self.selectedTile = nil;
 		}
 	}
 }
