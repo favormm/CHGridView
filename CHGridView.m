@@ -25,6 +25,7 @@
 
 @implementation CHGridView
 @synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight;
+@dynamic gridHeaderView, gridFooterView;
 
 - (void)commonSetup{
     if(visibleTiles == nil)
@@ -55,6 +56,9 @@
 
     [self setBackgroundColor:[UIColor whiteColor]];
 
+    tilesView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self addSubview:tilesView];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reuseHiddenTiles) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 }
 
@@ -81,12 +85,15 @@
 
 - (void)dealloc {
 	[[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-	
+
+    [tilesView release];
 	[sectionCounts release];
 	[layout release];
 	[reusableTiles release];
 	[visibleSectionHeaders release];
 	[visibleTiles release];
+    [gridHeaderView release];
+    [gridFooterView release];
     [super dealloc];
 }
 
@@ -123,9 +130,9 @@
 			[sectionHeader setAutoresizingMask:(UIViewAutoresizingFlexibleWidth)];
 			
 			if(self.dragging || self.decelerating)
-				[self insertSubview:sectionHeader atIndex:self.subviews.count - 1];
+				[tilesView insertSubview:sectionHeader atIndex:self.subviews.count - 1];
 			else
-				[self insertSubview:sectionHeader atIndex:self.subviews.count];
+				[tilesView insertSubview:sectionHeader atIndex:self.subviews.count];
 				
 			[visibleSectionHeaders addObject:sectionHeader];
 			[sectionHeader release];
@@ -162,7 +169,7 @@
 	
 	[tile setBackgroundColor:self.backgroundColor];
 	
-	[self insertSubview:tile atIndex:0];
+	[tilesView insertSubview:tile atIndex:0];
 	[visibleTiles addObject:tile];
 }
 
@@ -246,9 +253,14 @@
 	[self setNeedsLayout];
 	
 	maxReusable = ceilf((self.bounds.size.height / rowHeight) * perLine) * 2;
-	
-	if([layout contentHeight] > b.size.height)
-		[self setContentSize:CGSizeMake(b.size.width, [layout contentHeight])];
+
+    tilesView.frame = CGRectMake(0, (gridHeaderView ? gridHeaderView.frame.size.height : 0), b.size.width, [layout contentHeight]);
+
+    float contentHeight = [layout contentHeight];
+    if (gridHeaderView) contentHeight += gridHeaderView.frame.size.height;
+    if (gridFooterView) contentHeight += gridFooterView.frame.size.height;
+	if(contentHeight > b.size.height)
+		[self setContentSize:CGSizeMake(b.size.width, contentHeight)];
 	else
 		[self setContentSize:CGSizeMake(b.size.width, b.size.height + 1.0f)];
 }
@@ -301,6 +313,9 @@
 			[self loadVisibleTileForIndexPath:tile.indexPath withRect:r];
 		}
 	}
+
+    if(gridHeaderView) gridHeaderView.frame = CGRectMake(0, 0, b.size.width, gridHeaderView.frame.size.height);
+    if(gridFooterView) gridFooterView.frame = CGRectMake(0, self.contentSize.height - gridFooterView.frame.size.height, b.size.width, gridFooterView.frame.size.height);
 	
 	//if([[self delegate] respondsToSelector:@selector(visibleTilesChangedTo:)]) [[self delegate] visibleTilesChangedTo:visibleTiles.count];
 }
@@ -414,6 +429,28 @@
 
 - (void)setAllowsSelection:(BOOL)allows{
 	allowsSelection = allows;
+}
+
+- (UIView *)gridHeaderView{
+    return [[gridHeaderView retain] autorelease];
+}
+
+- (void)setGridHeaderView:(UIView *)view{
+    [gridHeaderView removeFromSuperview];
+    gridHeaderView = [view retain];
+    [self insertSubview:view atIndex:0];
+    [self setNeedsLayout];
+}
+
+- (UIView *)gridFooterView{
+    return [[gridFooterView retain] autorelease];
+}
+
+- (void)setGridFooterView:(UIView *)view{
+    [gridFooterView removeFromSuperview];
+    gridFooterView = [view retain];
+    [self addSubview:view];
+    [self setNeedsLayout];
 }
 
 #pragma mark touch methods

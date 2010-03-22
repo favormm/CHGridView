@@ -38,6 +38,7 @@
 
 @interface CHGridView : UIScrollView {
 	CHGridLayout					*layout;
+	UIView							*tilesView;
 	
 	NSMutableArray					*visibleTiles;
 	NSMutableArray					*visibleSectionHeaders;
@@ -60,6 +61,7 @@
 	float							rowHeight;
 	int								perLine;
 	float							sectionTitleHeight;
+	UIView							*gridHeaderView, *gridFooterView;
 }
 
 @property (nonatomic, assign) id<CHGridViewDataSource> dataSource;
@@ -72,6 +74,7 @@
 @property (nonatomic) float						rowHeight;
 @property (nonatomic) int						perLine;
 @property (nonatomic) float						sectionTitleHeight;
+@property (nonatomic, retain) IBOutlet UIView	*gridHeaderView, *gridFooterView;
 
 - (void)reloadData;
 - (void)reloadDataAndLayoutUpdateNeeded:(BOOL)layoutNeeded;
