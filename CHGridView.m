@@ -119,7 +119,7 @@
 			CHSectionHeaderView *sectionHeader = nil;
 			
 			if([[self delegate] respondsToSelector:@selector(titleViewForHeaderOfSection:inGridView:)]){
-				sectionHeader = [[self delegate] headerViewForSection:i inGridView:self];
+				sectionHeader = [[[self delegate] headerViewForSection:i inGridView:self] retain];
 				[sectionHeader setFrame:CGRectMake(b.origin.x, yCoordinate, b.size.width, sectionTitleHeight)];
 			}else{
 				sectionHeader = [[CHSectionHeaderView alloc] initWithFrame:CGRectMake(b.origin.x, yCoordinate, b.size.width, sectionTitleHeight)];
