@@ -110,8 +110,8 @@
 		int numberOfTilesInSection = [array count];
 		contentHeight += ceilf(numberOfTilesInSection / perLineFloat) * rowHeight;
 	}
-	
-	if(sections > 1) contentHeight += (sectionTitleHeight * sections) + ((sections - 1) * padding.height);
+
+	if(sections > 0) contentHeight += (sectionTitleHeight * sections) + ((sections - 1) * padding.height);
 	contentHeight += padding.height;
 	
 	uint i;
@@ -120,8 +120,8 @@
 		CHGridLayoutSection *previousSection = nil;
 		if(i > 0) previousSection = [sectionTitles objectAtIndex:(i - 1)];
 		NSMutableArray *tilesForSection = [index objectAtIndex:i];
-		
-		if(sections > 1){
+
+		if(sections > 0){
 			float previousY = 0.0f;
 			if(previousSection != nil) previousY = previousSection.yCoordinate;
 			int numberOfTilesInPreviousSection = 0;

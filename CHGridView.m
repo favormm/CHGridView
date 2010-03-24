@@ -44,7 +44,7 @@
     if(sectionCounts == nil)
         sectionCounts = [[NSMutableArray alloc] init];
 
-    sections = 1;
+    sections = 0;
 
     allowsSelection = YES;
     centerTilesInGrid = NO;
@@ -103,8 +103,7 @@
 
 - (void)loadVisibleSectionTitlesForSectionRange:(CHSectionRange)range{
 	CGRect b = self.bounds;
-	if(sections <= 1) return;
-	
+
 	int i;
 	for (i = range.start; i <= range.end; i++) {
 		BOOL found = NO;
@@ -117,8 +116,8 @@
 			CGFloat yCoordinate = [layout yCoordinateForTitleOfSection:i];
 			
 			CHSectionHeaderView *sectionHeader = nil;
-			
-			if([[self delegate] respondsToSelector:@selector(titleViewForHeaderOfSection:inGridView:)]){
+
+			if([[self delegate] respondsToSelector:@selector(headerViewForSection:inGridView:)]){
 				sectionHeader = [[[self delegate] headerViewForSection:i inGridView:self] retain];
 				[sectionHeader setFrame:CGRectMake(b.origin.x, yCoordinate, b.size.width, sectionTitleHeight)];
 			}else{
@@ -300,9 +299,7 @@
 	CGFloat firstY = (b.size.height + contentOffsetY + pixelMargin);
 	CGFloat secondY = contentOffsetY - pixelMargin;
 
-	BOOL hasSections = (sections > 1);
-	
-	if(hasSections){
+	if(sections != 0){
 		CHSectionRange sectionRange = [layout sectionRangeForContentOffset:contentOffsetY andHeight:b.size.height];
 		[self loadVisibleSectionTitlesForSectionRange:sectionRange];
 		[self calculateSectionTitleOffset];
