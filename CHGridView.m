@@ -123,7 +123,15 @@
 			}else{
 				sectionHeader = [[CHSectionHeaderView alloc] initWithFrame:CGRectMake(b.origin.x, yCoordinate, b.size.width, sectionTitleHeight)];
 				if([dataSource respondsToSelector:@selector(titleForHeaderOfSection:inGridView:)])
+				{
 					[sectionHeader setTitle:[dataSource titleForHeaderOfSection:i inGridView:self]];
+				}
+				else if(sections == 1)
+				{
+					[sectionHeader release];
+					[layout setSectionTitleHeight:0.0f];
+					continue;
+				}
 			}
 			
 			[sectionHeader setYCoordinate:yCoordinate];
