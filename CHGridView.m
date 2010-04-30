@@ -509,11 +509,13 @@
 	
 	UIView *view = [self hitTest:location withEvent:event];
 
-    CHGridIndexPath indexPath = ((CHTileView *)view).indexPath;
-	if(selectedIndexPath.section == indexPath.section && selectedIndexPath.tileIndex == indexPath.tileIndex && allowsSelection){
-		if([[self delegate] respondsToSelector:@selector(selectedTileAtIndexPath:inGridView:)])
-			[[self delegate] selectedTileAtIndexPath:indexPath inGridView:self];
-	}
+	if([view isKindOfClass:[CHTileView class]] && allowsSelection){
+        CHGridIndexPath indexPath = ((CHTileView *)view).indexPath;
+        if(selectedIndexPath.section == indexPath.section && selectedIndexPath.tileIndex == indexPath.tileIndex && allowsSelection){
+            if([[self delegate] respondsToSelector:@selector(selectedTileAtIndexPath:inGridView:)])
+                [[self delegate] selectedTileAtIndexPath:indexPath inGridView:self];
+        }
+    }
 }
 
 #pragma mark section title view offset
