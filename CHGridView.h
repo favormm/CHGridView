@@ -49,8 +49,8 @@
 	int								sections;
 	NSMutableArray					*sectionCounts;
 	int								maxReusable;
-	
-	CHTileView						*selectedTile;
+
+	CHGridIndexPath                 selectedIndexPath;
 	BOOL							isSlowDevice;
 
 	//settable properties
@@ -85,6 +85,7 @@
 - (CHGridIndexPath)indexPathForPoint:(CGPoint)point;
 
 - (void)scrollToTileAtIndexPath:(CHGridIndexPath)indexPath animated:(BOOL)animated;
+- (void)selectTileAtIndexPath:(CHGridIndexPath)indexPath animated:(BOOL)animated;
 - (void)deselectTileAtIndexPath:(CHGridIndexPath)indexPath;
 - (void)deselectSelectedTile;
 

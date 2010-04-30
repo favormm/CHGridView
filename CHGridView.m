@@ -12,7 +12,7 @@
 #import "CHGridLayoutTile.h"
 
 @interface CHGridView()
-@property (nonatomic, retain) CHTileView *selectedTile;
+@property (nonatomic, assign) CHGridIndexPath selectedIndexPath;
 - (void)loadVisibleSectionTitlesForSectionRange:(CHSectionRange)range;
 - (void)loadVisibleTileForIndexPath:(CHGridIndexPath)indexPath withRect:(CGRect)r;
 - (void)reuseHiddenTiles;
@@ -25,7 +25,7 @@
 @end
 
 @implementation CHGridView
-@synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight, selectedTile;
+@synthesize dataSource, centerTilesInGrid, allowsSelection, padding, preLoadMultiplier, rowHeight, perLine, sectionTitleHeight, selectedIndexPath;
 @dynamic gridHeaderView, gridFooterView;
 
 - (void)commonSetup{
@@ -52,6 +52,7 @@
     rowHeight = 100.0f;
     perLine = 5;
     sectionTitleHeight = 25.0f;
+    selectedIndexPath = CHGridIndexPathMake(0, -1);
 
     preLoadMultiplier = 6.0f;
 
@@ -95,7 +96,6 @@
 	[visibleTiles release];
     [gridHeaderView release];
     [gridFooterView release];
-    [selectedTile release];
     [super dealloc];
 }
 
@@ -162,7 +162,7 @@
 	CHTileView *tile = [dataSource tileForIndexPath:indexPath inGridView:self];
 	
 	[tile setIndexPath:indexPath];
-	[tile setSelected:NO];
+    [tile setSelected:selectedIndexPath.section == indexPath.section && selectedIndexPath.tileIndex == indexPath.tileIndex];
 
 	if([[self delegate] respondsToSelector:@selector(sizeForTileAtIndex:inGridView:)] && centerTilesInGrid){
 		CGSize size = [[self delegate] sizeForTileAtIndex:indexPath inGridView:self];
@@ -175,9 +175,12 @@
 		[tile setFrame:r];
 		[tile setAutoresizingMask:(UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleWidth)];
 	}
-	
-	[tile setBackgroundColor:self.backgroundColor];
-	
+
+    if (!tile.selected)
+    {
+        [tile setBackgroundColor:self.backgroundColor];
+    }
+
 	[tilesView insertSubview:tile atIndex:0];
 	[visibleTiles addObject:tile];
 }
@@ -228,7 +231,8 @@
 	[self removeAllSubviews];
 	[visibleTiles removeAllObjects];
 	[visibleSectionHeaders removeAllObjects];
-	
+    selectedIndexPath = CHGridIndexPathMake(0, -1);
+
 	CGRect b = [self bounds];
 	
 	if([dataSource respondsToSelector:@selector(numberOfSectionsInGridView:)]){
@@ -399,19 +403,27 @@
 
 #pragma mark selection methods
 
+- (void)selectTileAtIndexPath:(CHGridIndexPath)indexPath animated:(BOOL)animated{
+    if(selectedIndexPath.tileIndex != -1)
+        [self deselectTileAtIndexPath:selectedIndexPath];
+
+    [self scrollToTileAtIndexPath:indexPath animated:animated];
+    self.selectedIndexPath = indexPath;
+    [self setNeedsLayout];
+}
+
 - (void)deselectTileAtIndexPath:(CHGridIndexPath)indexPath{
 	for(CHTileView *tile in visibleTiles){
 		if(tile.indexPath.section == indexPath.section && tile.indexPath.tileIndex == indexPath.tileIndex){
 			[tile setSelected:NO];
-			self.selectedTile = nil;
+			self.selectedIndexPath = CHGridIndexPathMake(0, -1);
 		}
 	}
 }
 
 - (void)deselectSelectedTile{
-	if(selectedTile){
-		[self deselectTileAtIndexPath:selectedTile.indexPath];
-		self.selectedTile = nil;
+	if(selectedIndexPath.tileIndex != -1){
+		[self deselectTileAtIndexPath:selectedIndexPath];
 	}
 }
 
@@ -470,11 +482,12 @@
 	UIView *view = [self hitTest:location withEvent:event];
 	
 	if([view isKindOfClass:[CHTileView class]] && allowsSelection){
-		if(selectedTile)
-			[self deselectTileAtIndexPath:selectedTile.indexPath];
-		
-		self.selectedTile = (CHTileView *)view;
-		[selectedTile setSelected:YES];
+		if(selectedIndexPath.tileIndex != -1)
+			[self deselectTileAtIndexPath:selectedIndexPath];
+
+
+		self.selectedIndexPath = ((CHTileView *)view).indexPath;
+		[(CHTileView *)view setSelected:YES];
 	}
 }
 
@@ -482,9 +495,9 @@
 	[super touchesMoved:touches withEvent:event];
 
 	if(self.dragging || self.tracking || (self.decelerating && allowsSelection)){
-		if(selectedTile != nil){
-			[selectedTile setSelected:NO];
-			self.selectedTile = nil;
+		if(selectedIndexPath.tileIndex != -1){
+			[[self tileForIndexPath:selectedIndexPath] setSelected:NO];
+			self.selectedIndexPath = CHGridIndexPathMake(0, -1);
 		}
 	}
 }
@@ -495,10 +508,11 @@
 	CGPoint location = [touch locationInView:self];
 	
 	UIView *view = [self hitTest:location withEvent:event];
-	
-	if(selectedTile != nil && [selectedTile isEqual:view] && allowsSelection){
+
+    CHGridIndexPath indexPath = ((CHTileView *)view).indexPath;
+	if(selectedIndexPath.section == indexPath.section && selectedIndexPath.tileIndex == indexPath.tileIndex && allowsSelection){
 		if([[self delegate] respondsToSelector:@selector(selectedTileAtIndexPath:inGridView:)])
-			[[self delegate] selectedTileAtIndexPath:[selectedTile indexPath] inGridView:self];
+			[[self delegate] selectedTileAtIndexPath:indexPath inGridView:self];
 	}
 }
 
